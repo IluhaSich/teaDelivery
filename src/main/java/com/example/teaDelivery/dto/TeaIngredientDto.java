@@ -1,8 +1,5 @@
 package com.example.teaDelivery.dto;
 
-import com.example.teaDelivery.entity.Ingredient;
-import com.example.teaDelivery.entity.Tea;
-
 public class TeaIngredientDto extends BaseDto{
     private Long teaId;
     private Long ingredientId;

@@ -1,11 +1,10 @@
 package com.example.teaDelivery.service;
 
 import com.example.teaDelivery.dto.TeaDto;
-import com.example.teaDelivery.entity.BaseEntity;
-import com.example.teaDelivery.entity.Tea;
-import com.example.teaDelivery.repository.IngredientRepository;
-import com.example.teaDelivery.repository.TeaIngredientRepository;
-import com.example.teaDelivery.repository.TeaRepository;
+import com.example.teaDelivery.models.entity.Tea;
+import com.example.teaDelivery.models.entity.TeaInOrder;
+import com.example.teaDelivery.models.entity.TeaOrder;
+import com.example.teaDelivery.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,30 +12,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class TeaService implements BaseService<TeaDto, Tea> {
-    @Autowired
     private final TeaRepository teaRepository;
-    @Autowired
+    private final TeaInOrderRepository teaInOrderRepository;
     private final TeaIngredientRepository teaIngredientRepository;
-    @Autowired
     private final IngredientRepository ingredientRepository;
+    private final TeaOrderRepository teaOrderRepository;
 
-    public TeaService(TeaRepository teaRepository, TeaIngredientRepository teaIngredientRepository, IngredientRepository ingredientRepository) {
+    public TeaService(TeaRepository teaRepository, TeaInOrderRepository teaInOrderRepository, TeaIngredientRepository teaIngredientRepository, IngredientRepository ingredientRepository, TeaOrderRepository teaOrderRepository) {
         this.teaRepository = teaRepository;
+        this.teaInOrderRepository = teaInOrderRepository;
         this.teaIngredientRepository = teaIngredientRepository;
         this.ingredientRepository = ingredientRepository;
+        this.teaOrderRepository = teaOrderRepository;
     }
 
-    public Page<TeaDto> getAllTea(String name, String sort, int startCost, int endCost,int page,int size) {
-        Pageable pageable = PageRequest.of(page - 1,size,Sort.by("name"));
+    public Page<TeaDto> getAllTea(String name, String sort, int startCost, int endCost, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("name"));
         Page<Tea> teas = name != null
                 ? teaRepository.findByNameContainingIgnoreCaseAndSortContainingIgnoreCaseAndCostGreaterThanAndCostLessThan
-                (name,sort,startCost,endCost,pageable)
+                (name, sort, startCost, endCost, pageable)
                 : teaRepository.findAll(pageable);
         return teas.map(tea -> new TeaDto(
                 tea.getId(),
@@ -50,9 +50,7 @@ public class TeaService implements BaseService<TeaDto, Tea> {
         ));
     }
 
-
     public List<TeaDto> getBySort(String sort) {
-//        return teaRepository.getBySort(sort);
         return teaRepository.getBySort(sort).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
@@ -60,10 +58,11 @@ public class TeaService implements BaseService<TeaDto, Tea> {
         return convertToDto(teaRepository.getById(id).orElseThrow(() -> new RuntimeException("Чай не найден")));
     }
 
+
     public TeaDto getLastTea() {
-        // TODO: Реализовать получение последнего заказанного чая из общего списка заказов
-        System.out.println(teaRepository.findAll().getFirst().getName());
-        return convertToDto(teaRepository.findAll().getFirst());
+        Optional<TeaOrder> lastOrder = teaOrderRepository.findTopByOrderByTimeDesc();
+        Optional<TeaInOrder> teaInOrder = teaInOrderRepository.findFirstByTeaOrderOrderByIdAsc(lastOrder.get());
+        return convertToDto(teaInOrder.map(TeaInOrder::getTea).orElseThrow());
     }
 
     public List<String> getAllSorts() {

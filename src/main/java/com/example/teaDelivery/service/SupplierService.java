@@ -1,7 +1,7 @@
 package com.example.teaDelivery.service;
 
 import com.example.teaDelivery.dto.SupplierDto;
-import com.example.teaDelivery.entity.Supplier;
+import com.example.teaDelivery.models.entity.Supplier;
 import com.example.teaDelivery.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

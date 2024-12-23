@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body class="d-flex flex-column h-100">
+<div th:replace="~{fragments/navbar}">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+        <div class="row bg-light rounded rounded" >
+          <h2>Корзина</h2>
+          <h3 th:text="'Цена: ' + ${model.amount}"></h3>
+          <h3 th:text="'Цена со скидкой: ' + ${model.amountWithDiscount}"></h3>
+          <form th:action="@{/basket/clear}" method="post" class="mt-2">
+            <button type="submit" class="btn btn-danger">Очистить</button>
+          </form>
+        </div>
+        <form th:action="@{/basket/order}" method="post" class="mt-2">
+          <h2>Адрес доставки</h2>
+          <div class="form-group">
+            <label for="deliveryCity">Город</label>
+            <input type="text" class="form-control" id="deliveryCity" name="deliveryCity" placeholder="Введите город" required>
+          </div>
+          <div class="form-group">
+            <label for="deliveryState">Область</label>
+            <input type="text" class="form-control" id="deliveryState" name="deliveryState" placeholder="Введите область" required>
+          </div>
+          <div class="form-group">
+            <label for="deliveryStreet">Улица</label>
+            <input type="text" class="form-control" id="deliveryStreet" name="deliveryStreet" placeholder="Введите улицу" required>
+          </div>
+          <div class="form-group">
+            <label for="deliveryZip">Почтовый индекс</label>
+            <input type="text" class="form-control" id="deliveryZip" name="deliveryZip" placeholder="Введите почтовый индекс" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Оформить заказ</button>
+        </form>
+        <div th:if="${not #lists.isEmpty(model.items)}">
+          <div th:each="item : ${model.items}"
+               class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+            <h2 th:text="'name: ' + ${item.name}">Название чая</h2>
+            <h2 th:text="'sort: ' + ${item.sort}">Сорт</h2>
+            <h2 th:text="'cost: ' + ${item.cost}">Цена</h2>
+            <h2 th:text="'quantity: ' + ${item.quantity}">Количество</h2>
+            <form th:action="@{/basket/remove-tea}" method="post" class="mt-2">
+              <input type="hidden" name="teaId" th:value="${item.id}">
+              <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+            <form th:action="@{/basket/add-tea}" method="post" class="mt-2">
+              <input type="hidden" name="teaId" th:value="${item.id}">
+              <button type="submit" class="btn btn-primary">Добавить</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

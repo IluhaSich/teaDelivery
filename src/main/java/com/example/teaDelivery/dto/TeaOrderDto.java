@@ -1,8 +1,5 @@
 package com.example.teaDelivery.dto;
 
-import com.example.teaDelivery.entity.Client;
-import com.example.teaDelivery.entity.PersonalDiscount;
-
 import java.time.LocalDateTime;
 
 public class TeaOrderDto extends BaseDto{

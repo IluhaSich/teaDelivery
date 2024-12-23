@@ -1,12 +1,9 @@
 package com.example.teaDelivery.service;
 
-import com.example.teaDelivery.dto.IngredientDto;
-import com.example.teaDelivery.entity.Ingredient;
-import com.example.teaDelivery.entity.TeaIngredient;
+import com.example.teaDelivery.models.entity.TeaIngredient;
 import com.example.teaDelivery.repository.IngredientRepository;
 import com.example.teaDelivery.repository.TeaIngredientRepository;
 import com.example.teaDelivery.repository.TeaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,8 +1,5 @@
 package com.example.teaDelivery.dto;
 
-import com.example.teaDelivery.entity.Tea;
-import com.example.teaDelivery.entity.TeaOrder;
-
 public class TeaInOrderDto {
     private Long teaOrder;
     private Long tea;

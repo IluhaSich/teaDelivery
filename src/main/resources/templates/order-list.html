@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body class="d-flex flex-column h-100">
+<div th:replace="~{fragments/navbar}">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+        <h2 class="text-center text-dark mt-5">Заказы</h2>
+        <div th:if="${not #lists.isEmpty(model.orders)}">
+
+          <div th:each="order : ${model.orders}"
+               class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+            <h2 th:text="'Кому: ' + ${order.fullname}"></h2>
+            <h2 th:text="'Цена: ' + ${order.amount}"></h2>
+            <h2 th:text="'Дата: ' + ${order.localDateTime}"></h2>
+            <h2 th:text="'Куда: ' + ${order.deliveryTo}"></h2>
+            <h2 th:text="'Статус: ' + ${order.orderStatus}"></h2>
+            <div class="mt-2">
+              <a class="btn btn-secondary"
+                 th:href="@{/admin/order/{id}(id=${order.id})}">Подробнее</a>
+            </div>
+          </div>
+
+          <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              <li class="page-item"
+                  th:each="pageNumber : ${#numbers.sequence(1, model.totalPages)}"
+                  th:classappend="${pageNumber == form.page} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/order/(
+                                   page=${pageNumber},
+                                   size=${form.size}"
+                   th:text="${pageNumber}">1</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

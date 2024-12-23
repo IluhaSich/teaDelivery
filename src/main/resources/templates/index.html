@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head"></head>
+<head th:replace="~{fragments/head}"></head>
 <body class="d-flex flex-column h-100">
-<div th:replace="fragments/navbar">Navbar</div>
+<div th:replace="~{fragments/navbar}">Navbar</div>
 <main class="flex-shrink-0">
     <div class="container">
         <div class="row">
@@ -25,14 +25,14 @@
                 </div>
                     <div th:each="discount : ${model.personalDiscountViewModels}"
                          class="d-flex flex-column bg-text mb-3 p-3 border rounded">
-                        <h2 th:text="${discount.discountName}">Название скидки</h2>
+                        <h2 th:text="${discount.discountName}"></h2>
                         <h2 th:text="'Описание: '+${discount.description}"></h2>
                         <h2 th:text="'Сорт: '+${discount.teaSort}"></h2>
                         <h2 th:text="'Скидка: '+${discount.discount}"></h2>
                         <div class="mt-2">
-                            <a class="btn btn-secondary">
-                                <!--                               th:href="@{/books/{id}(id=${book.id})}"-->
-                                Подробнее</a>
+                            <a class="btn btn-secondary"
+                               th:href="@{/discounts/}">Подробнее
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
         </div>
     </div>
 </main>
-<footer th:replace="fragments/footer"/>
+<footer th:replace="~{fragments/footer}"/>
 </body>
 </html>
 

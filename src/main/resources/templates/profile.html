@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="~{fragments/navbar}">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <main class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
+        <div class="justify-content-center">
+          <h1>Profile</h1>
+        </div>
+        <div class="row bg-light rounded">
+          <div class="col-md-6" th:object="${user}">
+            <h2>User</h2>
+            <h4 th:text="'Username: ' + *{username}"></h4>
+            <h4 th:text="'FullName: ' + *{fullName}"></h4>
+            <h4 th:text="'Phone number: ' + *{phoneNumber}"></h4>
+            <h4 th:text="'Email: ' + *{email}"></h4>
+            <h4 th:text="'Loyalty points: ' + *{loyaltyPoints}"></h4>
+          </div>
+          <div class="col-md-6"><img src="/images/bu.png" height="350px"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

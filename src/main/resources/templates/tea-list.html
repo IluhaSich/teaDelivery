@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head"></head>
+<head th:replace="~{fragments/head}"></head>
 <body class="d-flex flex-column h-100">
-<div th:replace="fragments/navbar">Navbar</div>
+<div th:replace="~{fragments/navbar}">Navbar</div>
 <main class="flex-shrink-0">
     <div class="container">
         <div class="row">
@@ -55,6 +55,10 @@
                             <a class="btn btn-secondary"
                                th:href="@{/tea/{id}(id=${tea.id})}">Подробнее</a>
                         </div>
+                        <form th:action="@{/basket/add-tea}" method="post" class="mt-2">
+                            <input type="hidden" name="teaId" th:value="${tea.id}">
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </form>
                     </div>
 
                     <nav th:if="${model.totalPages > 1}" aria-label="Page navigation">
@@ -83,6 +87,6 @@
         </div>
     </div>
 </main>
-<footer th:replace="fragments/footer"/>
+<footer th:replace="~{fragments/footer}"/>
 </body>
 </html>

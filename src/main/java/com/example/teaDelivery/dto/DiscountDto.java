@@ -1,31 +1,62 @@
 package com.example.teaDelivery.dto;
 
-import com.example.teaDelivery.entity.Client;
-import com.example.teaDelivery.entity.PersonalDiscount;
-
 public class DiscountDto extends BaseDto{
-    private Long personalDiscount;
-    private Long client;
+    private String discountName;
+    private String description;
+    private String teaSort;
+    private double discount;
+    private double loyalCost;
 
-    public DiscountDto(Long id,Long personalDiscount, Long client) {
+    public DiscountDto(Long id, String discountName, String description, String teaSort, double discount, double loyalCost) {
         setId(id);
-        this.personalDiscount = personalDiscount;
-        this.client = client;
+        this.discountName = discountName;
+        this.description = description;
+        this.teaSort = teaSort;
+        this.discount = discount;
+        this.loyalCost = loyalCost;
     }
 
-    public Long getPersonalDiscount() {
-        return personalDiscount;
+    public DiscountDto() {
+
     }
 
-    public void setPersonalDiscount(Long personalDiscount) {
-        this.personalDiscount = personalDiscount;
+    public String getDiscountName() {
+        return discountName;
     }
 
-    public Long getClient() {
-        return client;
+    public void setDiscountName(String discountName) {
+        this.discountName = discountName;
     }
 
-    public void setClient(Long client) {
-        this.client = client;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTeaSort() {
+        return teaSort;
+    }
+
+    public void setTeaSort(String teaSort) {
+        this.teaSort = teaSort;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getLoyalCost() {
+        return loyalCost;
+    }
+
+    public void setLoyalCost(double loyalCost) {
+        this.loyalCost = loyalCost;
     }
 }

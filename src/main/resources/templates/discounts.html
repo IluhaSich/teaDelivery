@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body class="d-flex flex-column h-100">
+<div th:replace="~{fragments/navbar}">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <div class="row bg-light rounded rounded">
+                    <h3 th:text="'Количество накопленных баллов: ' + ${model.loyaltyPoints}"></h3>
+                </div>
+                <div th:if="${not #lists.isEmpty(model.discounts)}">
+                    <div th:each="discount : ${model.discounts}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+                        <h2 th:text="'discountName: ' + ${discount.discountName}"></h2>
+                        <h2 th:text="'description: ' + ${discount.description}"></h2>
+                        <h2 th:text="'teaSort: ' + ${discount.teaSort}"></h2>
+                        <h2 th:text="'discount: ' + ${discount.discount}"></h2>
+                        <h2 th:text="'loyalCost: ' + ${discount.loyalCost}"></h2>
+                        <form th:action="@{/discounts/add-discount}" method="post" class="mt-2">
+                            <input type="hidden" name="discountName" th:value="${discount.discountName}">
+                            <button type="submit" class="btn btn-primary">Добавить скидку</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row bg-light rounded rounded">
+                    <h3 th:text="'Ваши скидки'"></h3>
+                </div>
+                <div th:if="${not #lists.isEmpty(model.personalDiscounts)}">
+                    <div th:each="discount : ${model.personalDiscounts}"
+                         class="d-flex flex-column bg-text mb-3 p-3 border rounded">
+                        <h2 th:text="'discountName: ' + ${discount.discountName}"></h2>
+                        <h2 th:text="'description: ' + ${discount.description}"></h2>
+                        <h2 th:text="'teaSort: ' + ${discount.teaSort}"></h2>
+                        <h2 th:text="'discount: ' + ${discount.discount}"></h2>
+                        <form th:action="@{/discounts/apply-discount}" method="post" class="mt-2">
+                            <input type="hidden" name="discountName" th:value="${discount.discountName}">
+                            <button type="submit" class="btn btn-primary">Применить скидку</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

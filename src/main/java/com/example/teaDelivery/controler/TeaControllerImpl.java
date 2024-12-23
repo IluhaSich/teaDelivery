@@ -10,6 +10,9 @@ import com.example.teaDelivery.dto.TeaDto;
 import com.example.teaDelivery.service.IngredientService;
 import com.example.teaDelivery.service.SupplierService;
 import com.example.teaDelivery.service.TeaService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,20 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Реализовать вход для пользователей (Админов?)
-//TODO: Реализовать добавление в корзину товара (в Redis)
-//TODO: Добавить пагинацию
-//TODO: Заполнить все параметры в таблице значениями
-//TODO: Убрать методы заглушки, заменив на нормальные
-//TODO: Несколько контроллеров
-//TODO: Разбить вьюшки (BaseViewModel  как вариант запихнуть UserViewModel)
-
 @Controller
 @RequestMapping("/tea")
 public class TeaControllerImpl implements TeaController {
     TeaService teaService;
     IngredientService ingredientService;
     SupplierService supplierService;
+    private static final Logger logger = LogManager.getLogger(Controller.class);
 
     List<PersonalDiscountViewModel> personalDiscountViewModels = new ArrayList<>(List.of());
 
@@ -39,13 +35,14 @@ public class TeaControllerImpl implements TeaController {
         this.teaService = teaService;
         this.ingredientService = ingredientService;
         this.supplierService = supplierService;
-        //TODO: Убрать заглушку для List<PersonalDiscountViewModel>
         personalDiscountViewModels.add(new PersonalDiscountViewModel("Черная пятница", "black description", "black tea", 10, false));
         personalDiscountViewModels.add(new PersonalDiscountViewModel("Зеленая пятница", "green description", "green tea", 20, false));
     }
 
+
+    @Override
     @GetMapping("/")
-    public String getAllTea(@ModelAttribute("form") TeaSearchForm form, Model model) {
+    public String getAllTea(@ModelAttribute("form") TeaSearchForm form, Model model, HttpServletRequest request) {
         String name = form.name() != null ? form.name() : "";
         String sort = form.sort() != null ? form.sort() : "";
         Integer startCost = form.startCost() != null ? form.startCost() : 0;
@@ -66,7 +63,7 @@ public class TeaControllerImpl implements TeaController {
                 q.getCost(),
                 q.isAvailability(),
                 supplierService.getSupplierById(q.getSuppliers()).getSupplier_name(),
-                false // TODO: has discount
+                false
         )).toList();
         AllTeaViewModel allTeaViewModel = new AllTeaViewModel(
                 new BaseViewModel("",""),
@@ -76,12 +73,15 @@ public class TeaControllerImpl implements TeaController {
         );
         model.addAttribute("model", allTeaViewModel);
         model.addAttribute("form", form);
+        logger.info("Incoming Request: Method = {}, URI = {}",
+                request.getMethod(),
+                request.getRequestURI());
         return "tea-list";
     }
 
     @Override
     @GetMapping("/{id}")
-    public String getTea(Model model, @PathVariable Long id) {
+    public String getTea(Model model, @PathVariable Long id, HttpServletRequest request) {
         TeaDto tea = teaService.getTeaById(id);
         TeaViewModel teaViewModel = new TeaViewModel(
                 new BaseViewModel("",""),
@@ -94,16 +94,12 @@ public class TeaControllerImpl implements TeaController {
                 tea.getCost(),
                 tea.isAvailability(),
                 supplierService.getSupplierById(tea.getSuppliers()).getSupplier_name(),
-                false // TODO: has discount
+                false
         );
         model.addAttribute("model", teaViewModel);
+        logger.info("Incoming Request: Method = {}, URI = {}",
+                request.getMethod(),
+                request.getRequestURI());
         return "tea";
     }
-
-    @GetMapping("/ing")
-    public List<String> getIng() {
-        return ingredientService.getIngredientsByTeaId(1L);
-
-    }
-
 }
