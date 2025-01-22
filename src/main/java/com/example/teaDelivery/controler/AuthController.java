@@ -38,7 +38,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register(HttpServletRequest request) {
-        logger.info("Incoming Request: Method = {}, URI = {}, User = {}",
+        logger.info("Incoming Request: Method = {}, URI = {}",
                 request.getMethod(),
                 request.getRequestURI());
         return "register";
@@ -57,7 +57,7 @@ public class AuthController {
         }
 
         this.authService.register(userRegistrationDto);
-        logger.info("Incoming Request: Method = {}, URI = {}, User = {}",
+        logger.info("Incoming Request: Method = {}, URI = {}",
                 request.getMethod(),
                 request.getRequestURI(),
                 request.getRequestURI());
@@ -66,7 +66,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
-        logger.info("Incoming Request: Method = {}, URI = {}, User = {}",
+        logger.info("Incoming Request: Method = {}, URI = {}",
                 request.getMethod(),
                 request.getRequestURI(),
                 request.getRequestURI());
@@ -98,7 +98,7 @@ public class AuthController {
         );
 
         model.addAttribute("user", userProfileView);
-        logger.info("Incoming Request: Method = {}, URI = {}, User = {}",
+        logger.info("Incoming Request: Method = {}, URI = {}",
                 request.getMethod(),
                 request.getRequestURI(),
                 request.getRequestURI());

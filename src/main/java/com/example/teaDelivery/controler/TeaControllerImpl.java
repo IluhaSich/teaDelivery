@@ -11,6 +11,7 @@ import com.example.teaDelivery.service.IngredientService;
 import com.example.teaDelivery.service.SupplierService;
 import com.example.teaDelivery.service.TeaService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class TeaControllerImpl implements TeaController {
         );
         model.addAttribute("model", allTeaViewModel);
         model.addAttribute("form", form);
-        logger.info("Incoming Request: Method = {}, URI = {}",
+        logger.log(Level.INFO,"Incoming Request: Method = {}, URI = {}",
                 request.getMethod(),
                 request.getRequestURI());
         return "tea-list";
